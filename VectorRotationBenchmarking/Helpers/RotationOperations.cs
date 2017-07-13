@@ -10,8 +10,9 @@ namespace VectorRotationBenchmarking.Helpers
 {
     public static class RotationOperations
     {
-        private static Matrix<double> GetRotationMatrix(double degrees)
+        private static Matrix<double> GetRotationMatrixZAxis(double degrees)
         {
+            // Rotation Matrix for 3D vectors around the Z-axis
             double[,] value = { { Trig.Cos(Trig.DegreeToRadian(degrees)), -Trig.Sin(Trig.DegreeToRadian(degrees)), 0 },
                                 { Trig.Sin(Trig.DegreeToRadian(degrees)),  Trig.Cos(Trig.DegreeToRadian(degrees)), 0 },
                                 { 0                                     ,  0                                     , 1 } };
@@ -21,7 +22,7 @@ namespace VectorRotationBenchmarking.Helpers
 
         public static double[] MatrixRotate(double[] vector, double degrees)
         {
-            var rotationMatrix = GetRotationMatrix(degrees);
+            var rotationMatrix = GetRotationMatrixZAxis(degrees);
 
             var vectorForm = Vector<double>.Build.DenseOfArray(vector);
             return (rotationMatrix * vectorForm).ToArray();
