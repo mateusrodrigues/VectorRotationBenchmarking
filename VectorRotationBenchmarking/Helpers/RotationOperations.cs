@@ -20,12 +20,24 @@ namespace VectorRotationBenchmarking.Helpers
             return Matrix<double>.Build.DenseOfArray(value);
         }
 
-        public static double[] MatrixRotate(double[] vector, double degrees)
+        public static double[] MatrixRotateZAxis(double[] vector, double degrees)
         {
             var rotationMatrix = GetRotationMatrixZAxis(degrees);
 
             var vectorForm = Vector<double>.Build.DenseOfArray(vector);
             return (rotationMatrix * vectorForm).ToArray();
+        }
+
+        public static double[] QuaternionRotateZAxis(double[] vector, double degrees)
+        {
+            var axis = new Quaternion(0, 0, 0, 1);
+            var r = new Quaternion(Trig.Cos(Trig.DegreeToRadian(degrees/2)), Trig.Sin(Trig.DegreeToRadian(degrees/2)) * axis.Q1,
+                Trig.Sin(Trig.DegreeToRadian(degrees/2)) * axis.Q2, Trig.Sin(Trig.DegreeToRadian(degrees/2)) * axis.Q3);
+            var rprime = r.Invert();
+            var q = new Quaternion(0, vector[0], vector[1], vector[2]);
+
+            var result = r * q * rprime;
+            return new double[] { result.Q1, result.Q2, result.Q3 };
         }
     }
 }

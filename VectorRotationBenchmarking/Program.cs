@@ -12,12 +12,21 @@ namespace VectorRotationBenchmarking
         static void Main(string[] args)
         {
             double[] vector = { 0, 2, 3 };
-            double[] rotatedVector1 = RotationOperations.MatrixRotate(vector, 20);
-            double[] rotatedVector2 = RotationOperations.MatrixRotate(rotatedVector1, 40);
+            double[] rotatedVector1 = RotationOperations.MatrixRotateZAxis(vector, 20);
+            double[] rotatedVector2 = RotationOperations.MatrixRotateZAxis(rotatedVector1, 40);
 
             Console.WriteLine("Matrix-based Rotation (60 degrees):");
             Console.WriteLine($"1st rotation (+ 20 degrees): ({rotatedVector1[0]}, {rotatedVector1[1]}, {rotatedVector1[2]})");
             Console.WriteLine($"2nd rotation (+ 40 degrees): ({rotatedVector2[0]}, {rotatedVector2[1]}, {rotatedVector2[2]})");
+
+            Console.ReadLine();
+
+            double[] rotatedQuaternion1 = RotationOperations.QuaternionRotateZAxis(vector, 20);
+            double[] rotatedQuaternion2 = RotationOperations.QuaternionRotateZAxis(rotatedQuaternion1, 40);
+
+            Console.WriteLine("Quaternion-based Rotation (60 degrees):");
+            Console.WriteLine($"1st rotation (+ 20 degrees): ({rotatedQuaternion1[0]}, {rotatedQuaternion1[1]}, {rotatedQuaternion1[2]})");
+            Console.WriteLine($"2nd rotation (+ 40 degrees): ({rotatedQuaternion2[0]}, {rotatedQuaternion2[1]}, {rotatedQuaternion2[2]})");
 
             Console.ReadLine();
         }
