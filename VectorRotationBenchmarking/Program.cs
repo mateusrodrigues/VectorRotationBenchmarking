@@ -1,8 +1,10 @@
-﻿using System;
+﻿using BenchmarkDotNet.Running;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VectorRotationBenchmarking.Benchmarks;
 using VectorRotationBenchmarking.Helpers;
 
 namespace VectorRotationBenchmarking
@@ -27,6 +29,11 @@ namespace VectorRotationBenchmarking
             Console.WriteLine("Quaternion-based Rotation (60 degrees):");
             Console.WriteLine($"1st rotation (+ 20 degrees): ({rotatedQuaternion1[0]}, {rotatedQuaternion1[1]}, {rotatedQuaternion1[2]})");
             Console.WriteLine($"2nd rotation (+ 40 degrees): ({rotatedQuaternion2[0]}, {rotatedQuaternion2[1]}, {rotatedQuaternion2[2]})");
+
+            Console.ReadLine();
+
+            Console.WriteLine("Diagnostics:");
+            var summary = BenchmarkRunner.Run<MatrixVsQuaternionRotation>();
 
             Console.ReadLine();
         }
