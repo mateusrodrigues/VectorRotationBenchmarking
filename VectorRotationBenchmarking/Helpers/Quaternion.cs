@@ -51,6 +51,12 @@ namespace VectorRotationBenchmarking.Helpers
             return Math.Sqrt(Math.Pow(Q0, 2) + Math.Pow(Q1, 2) + Math.Pow(Q2, 2) + Math.Pow(Q3, 2));
         }
 
+        public Quaternion Normalize()
+        {
+            var norm = Norm();
+            return new Quaternion(Q0 / norm, Q1 / norm, Q2 / norm, Q3 / norm);
+        }
+
         public Quaternion Invert()
         {
             var conjugate = new Quaternion(Q0, -Q1, -Q2, -Q3);

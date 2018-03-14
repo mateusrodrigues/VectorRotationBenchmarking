@@ -32,8 +32,15 @@ namespace VectorRotationBenchmarking
 
             Console.ReadLine();
 
-            Console.WriteLine("Diagnostics:");
-            var summary = BenchmarkRunner.Run<MatrixVsQuaternionRotation>();
+            var matrixRotate = RotationOperations.MatrixRotateArbitraryAxis(vector, new double[] { 3, 4, 5 }, 30);
+            Console.WriteLine($"Matrix Rotation Arbitrary: ({matrixRotate[0]}, {matrixRotate[1]}, {matrixRotate[2]})");
+            matrixRotate = RotationOperations.QuaternionRotateArbitraryAxis(vector, new double[] { 3, 4, 5 }, 30);
+            Console.WriteLine($"Quaternion Rotation Arbitrary: ({matrixRotate[0]}, {matrixRotate[1]}, {matrixRotate[2]})");
+
+            //Console.ReadLine();
+
+            //Console.WriteLine("Diagnostics:");
+            //var summary = BenchmarkRunner.Run<MatrixVsQuaternionRotation>();
 
             Console.ReadLine();
         }
