@@ -1,11 +1,5 @@
-﻿using MathNet.Numerics;
-using MathNet.Numerics.LinearAlgebra;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace VectorRotationBenchmarking.Helpers
 {
@@ -19,18 +13,18 @@ namespace VectorRotationBenchmarking.Helpers
         /// <returns>The resulting vector of the rotation.</returns>
         public static double[] MatrixRotateZAxis(double[] vector, double degrees)
         {
-            var angleInRadians = Trig.DegreeToRadian(degrees);
-            // Rotation Matrix for 3-dimensional vectors around the Z-axis
-            double[,] value = { { Trig.Cos(angleInRadians), -Trig.Sin(angleInRadians), 0 },
-                                { Trig.Sin(angleInRadians),  Trig.Cos(angleInRadians), 0 },
-                                { 0                       ,  0                       , 1 } };
+            // Convert the angle from degrees to radians
+            var angleInRadians = degrees * Math.PI / 180;
 
-            // Get the rotation matrix
-            var rotationMatrix = Matrix<double>.Build.DenseOfArray(value);
-            // Build the Vector<> object from the array passed in
-            var vectorForm = Vector<double>.Build.DenseOfArray(vector);
-            // Return the result of the rotation
-            return (rotationMatrix * vectorForm).ToArray();
+            // Rotation Matrix for 3-dimensional vectors around the Z-axis
+            double[,] rotationMatrix = { { Math.Cos(angleInRadians), -Math.Sin(angleInRadians), 0 },
+                                         { Math.Sin(angleInRadians),  Math.Cos(angleInRadians), 0 },
+                                         { 0                       ,  0                       , 1 } };
+
+            // Calculate and return the result of the rotation
+            return new double[]{ (rotationMatrix[0, 0] * vector[0] + rotationMatrix[0, 1] * vector[1] + rotationMatrix[0, 2] * vector[2]),
+                                 (rotationMatrix[1, 0] * vector[0] + rotationMatrix[1, 1] * vector[1] + rotationMatrix[1, 2] * vector[2]),
+                                 (rotationMatrix[2, 0] * vector[0] + rotationMatrix[2, 1] * vector[2] + rotationMatrix[2, 2] * vector[2]) };
         }
 
         /// <summary>
@@ -42,6 +36,9 @@ namespace VectorRotationBenchmarking.Helpers
         /// <returns>The resulting vector of the rotation.</returns>
         public static double[] MatrixRotateArbitraryAxis(double[] vector, double[] axis, double degrees)
         {
+            // Convert the angle from degrees to radians
+            var angleInRadians = degrees * Math.PI / 180;
+
             // Turn the vector array into a System.Numerics Vector3 object
             var vectorObject = new Vector3((float)vector[0], (float)vector[1], (float)vector[2]);
             // Turn the axis array into a System.Numerics NORMALIZED Vector3 object
@@ -52,11 +49,11 @@ namespace VectorRotationBenchmarking.Helpers
             var crossProduct = Vector3.Cross(axisUnitVector, vectorObject);
 
             // First member of the Rodrigues' rotation formula: V*cos(theta)
-            var firstMember = vectorObject * (float)Trig.Cos(Trig.DegreeToRadian(degrees));
+            var firstMember = vectorObject * (float)Math.Cos(angleInRadians);
             // Second member of the Rodrigues' rotation formula: (K x V)*sin(theta)
-            var secondMember = crossProduct * (float)Trig.Sin(Trig.DegreeToRadian(degrees));
+            var secondMember = crossProduct * (float)Math.Sin(angleInRadians);
             // Third member of the Rodrigues' rotation formula: K * (K . V) * (1 - cos(theta))
-            var thirdMember = axisUnitVector * Vector3.Dot(axisUnitVector, vectorObject) * (1 - (float)Trig.Cos(Trig.DegreeToRadian(degrees)));
+            var thirdMember = axisUnitVector * Vector3.Dot(axisUnitVector, vectorObject) * (1 - (float)Math.Cos(angleInRadians));
             // Summing all members together
             var result = firstMember + secondMember + thirdMember;
             
@@ -71,11 +68,19 @@ namespace VectorRotationBenchmarking.Helpers
         /// <returns>The resulting vector of the rotation.</returns>
         public static double[] QuaternionRotateZAxis(double[] vector, double degrees)
         {
+            // Convert the angle from degrees to radians
+            // already dividing the angle by two according to the
+            // quaternion rotation formula
+            var angleInRadians = (degrees / 2.0) * Math.PI / 180;
             // The quaternion representation of the z-axis
             var axis = new Quaternion(0, 0, 0, 1);
             // The r quaternion from the r * q * r' formula
-            var r = new Quaternion(Trig.Cos(Trig.DegreeToRadian(degrees/2)), Trig.Sin(Trig.DegreeToRadian(degrees/2)) * axis.Q1,
-                Trig.Sin(Trig.DegreeToRadian(degrees/2)) * axis.Q2, Trig.Sin(Trig.DegreeToRadian(degrees/2)) * axis.Q3);
+            var r = new Quaternion(
+                Math.Cos(angleInRadians),
+                Math.Sin(angleInRadians) * axis.Q1,
+                Math.Sin(angleInRadians) * axis.Q2,
+                Math.Sin(angleInRadians) * axis.Q3
+            );
             // The r' quaternion from the r * q * r' formula
             var rprime = r.Invert();
             // The quaternion representation of the vector to be rotated
@@ -95,11 +100,19 @@ namespace VectorRotationBenchmarking.Helpers
         /// <returns>The resulting vector of the rotation.</returns>
         public static double[] QuaternionRotateArbitraryAxis(double[] vector, double[] axis, double degrees)
         {
+            // Convert the angle from degrees to radians
+            // already dividing the angle by two according to the
+            // quaternion rotation formula
+            var angleInRadians = (degrees / 2.0) * Math.PI / 180;
             // The quaternion representation of the rotation axis
             var unitAxis = new Quaternion(0, axis[0], axis[1], axis[2]).Normalize();
             // The r quaternion from the r * q * r' formula
-            var r = new Quaternion(Trig.Cos(Trig.DegreeToRadian(degrees / 2)), Trig.Sin(Trig.DegreeToRadian(degrees / 2)) * unitAxis.Q1,
-                Trig.Sin(Trig.DegreeToRadian(degrees / 2)) * unitAxis.Q2, Trig.Sin(Trig.DegreeToRadian(degrees / 2)) * unitAxis.Q3);
+            var r = new Quaternion(
+                Math.Cos(angleInRadians),
+                Math.Sin(angleInRadians) * unitAxis.Q1,
+                Math.Sin(angleInRadians) * unitAxis.Q2,
+                Math.Sin(angleInRadians) * unitAxis.Q3
+            );
             // The r' quaternion from the r * q * r' formula
             var rprime = r.Invert();
             // The quaternion representation of the vector to be rotated
