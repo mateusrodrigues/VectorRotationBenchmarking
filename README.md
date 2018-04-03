@@ -1,15 +1,15 @@
 # VectorRotationBenchmarking
 
-Benchmarking mathematical vector rotation through matrix-based and quaternion-based methods using BenchmarkDotNet to obtain memory-related, CPU-related and time-related information on these ops.
+Benchmarking mathematical vector rotation through matrix-based and quaternion-based methods using BenchmarkDotNet to obtain memory, CPU, and time-related information on these ops.
 
 ## Running the Project
 
 1. Download Visual Studio 2017
 2. Open the VectorRotationBenchmarking.sln solution file
-3. Build the solution as Release, not Debug
+3. Build the solution as **Release**, not Debug
 4. Go to your bin\Release folder in the project's folder on Windows Explorer and **run VectorRotationBenchmarking.exe as admin** for the Hardware Counters to work
 
-It should take a while on average hardware. By the end of the run, you should have the results of the benchmark on your screen as well as in the BenchmarkDotNet.Artifacts folder inside bin\Release.
+This should take a while on average hardware. Make good use of this waiting period and get yourself some coffee! By the end of the run, you should have the results of the benchmark on your screen as well as in the BenchmarkDotNet.Artifacts folder inside bin\Release.
 
 ## Works On My Machine (tm)
 
