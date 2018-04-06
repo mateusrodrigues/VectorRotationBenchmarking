@@ -12,8 +12,8 @@ using VectorRotationBenchmarking.Helpers;
 namespace VectorRotationBenchmarking.Benchmarks
 {
     [AllStatisticsColumn]
-    [MemoryDiagnoser]
-    [HardwareCounters(HardwareCounter.TotalCycles, HardwareCounter.Timer)]
+    //[MemoryDiagnoser]
+    //[HardwareCounters(HardwareCounter.TotalCycles, HardwareCounter.Timer)]
     [HtmlExporter]
     [MarkdownExporter]
     [CsvExporter]

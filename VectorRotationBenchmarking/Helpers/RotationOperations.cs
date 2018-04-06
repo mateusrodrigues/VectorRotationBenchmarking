@@ -73,22 +73,24 @@ namespace VectorRotationBenchmarking.Helpers
             // quaternion rotation formula
             var angleInRadians = (degrees / 2.0) * Math.PI / 180;
             // The quaternion representation of the z-axis
-            var axis = new Quaternion(0, 0, 0, 1);
+            // var axis = new Quaternion(0, 0, 0, 1);
+            var axis = new System.Numerics.Quaternion(0, 0, 1, 0);
             // The r quaternion from the r * q * r' formula
-            var r = new Quaternion(
-                Math.Cos(angleInRadians),
-                Math.Sin(angleInRadians) * axis.Q1,
-                Math.Sin(angleInRadians) * axis.Q2,
-                Math.Sin(angleInRadians) * axis.Q3
+            var r = new System.Numerics.Quaternion(
+                (float)Math.Sin(angleInRadians) * axis.X,
+                (float)Math.Sin(angleInRadians) * axis.Y,
+                (float)Math.Sin(angleInRadians) * axis.Z,
+                (float)Math.Cos(angleInRadians)
             );
             // The r' quaternion from the r * q * r' formula
-            var rprime = r.Invert();
+            // var rprime = r.Invert();
+            var rprime = System.Numerics.Quaternion.Inverse(r);
             // The quaternion representation of the vector to be rotated
-            var q = new Quaternion(0, vector[0], vector[1], vector[2]);
+            var q = new System.Numerics.Quaternion((float)vector[0], (float)vector[1], (float)vector[2], 0);
             // The resulting quaternion after the rotation
             var result = r * q * rprime;
             // Return the resulting vector from the result quaternion
-            return new double[] { result.Q1, result.Q2, result.Q3 };
+            return new double[] { result.X, result.Y, result.Z };
         }
 
         /// <summary>
@@ -105,22 +107,22 @@ namespace VectorRotationBenchmarking.Helpers
             // quaternion rotation formula
             var angleInRadians = (degrees / 2.0) * Math.PI / 180;
             // The quaternion representation of the rotation axis
-            var unitAxis = new Quaternion(0, axis[0], axis[1], axis[2]).Normalize();
+            var unitAxis = System.Numerics.Quaternion.Normalize(new System.Numerics.Quaternion((float)axis[0], (float)axis[1], (float)axis[2], 0));
             // The r quaternion from the r * q * r' formula
-            var r = new Quaternion(
-                Math.Cos(angleInRadians),
-                Math.Sin(angleInRadians) * unitAxis.Q1,
-                Math.Sin(angleInRadians) * unitAxis.Q2,
-                Math.Sin(angleInRadians) * unitAxis.Q3
+            var r = new System.Numerics.Quaternion(
+                (float)Math.Sin(angleInRadians) * unitAxis.X,
+                (float)Math.Sin(angleInRadians) * unitAxis.Y,
+                (float)Math.Sin(angleInRadians) * unitAxis.Z,
+                (float)Math.Cos(angleInRadians)
             );
             // The r' quaternion from the r * q * r' formula
-            var rprime = r.Invert();
+            var rprime = System.Numerics.Quaternion.Inverse(r);
             // The quaternion representation of the vector to be rotated
-            var q = new Quaternion(0, vector[0], vector[1], vector[2]);
+            var q = new System.Numerics.Quaternion((float)vector[0], (float)vector[1], (float)vector[2], 0);
             // The resulting quaternion after the rotation
             var result = r * q * rprime;
             // Return the resulting vector from the result quaternion
-            return new double[] { result.Q1, result.Q2, result.Q3 };
+            return new double[] { result.X, result.Y, result.Z };
         }
     }
 }
