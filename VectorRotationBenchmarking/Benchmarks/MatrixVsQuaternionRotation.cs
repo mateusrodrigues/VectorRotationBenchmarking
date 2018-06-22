@@ -12,8 +12,10 @@ using VectorRotationBenchmarking.Helpers;
 namespace VectorRotationBenchmarking.Benchmarks
 {
     [AllStatisticsColumn]
-    //[MemoryDiagnoser]
-    //[HardwareCounters(HardwareCounter.TotalCycles, HardwareCounter.Timer)]
+#if NET471
+    [MemoryDiagnoser]
+    [HardwareCounters(HardwareCounter.TotalCycles, HardwareCounter.Timer)]
+#endif
     [HtmlExporter]
     [MarkdownExporter]
     [CsvExporter]
@@ -33,8 +35,7 @@ namespace VectorRotationBenchmarking.Benchmarks
             {
                 rotatedMatrix = RotationOperations.MatrixRotateZAxis(rotatedMatrix, 15);
             }
-            // var rotatedMatrix1 = RotationOperations.MatrixRotateZAxis(vector, 20);
-            // var rotatedMatrix2 = RotationOperations.MatrixRotateZAxis(rotatedMatrix1, 40);
+
             return rotatedMatrix;
         }
 
@@ -57,8 +58,7 @@ namespace VectorRotationBenchmarking.Benchmarks
             {
                 rotatedQuaternion = RotationOperations.QuaternionRotateZAxis(rotatedQuaternion, 15);
             }
-            // var rotatedQuaternion1 = RotationOperations.QuaternionRotateZAxis(vector, 20);
-            // var rotatedQuaternion2 = RotationOperations.QuaternionRotateZAxis(rotatedQuaternion1, 40);
+
             return rotatedQuaternion;
         }
 
